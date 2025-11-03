@@ -12,7 +12,8 @@ HEADERS = {"User-Agent": "Mozilla/5.0"}
 BACKFILL_RSS = "https://awk.space/tal.xml"
 OFFICIAL_RSS = "https://thisamericanlife.org/podcast/rss.xml"
 DELAY = 1
-DEFAULT_NUM_EPISODES = 7  # for testing mode
+DEFAULT_NUM_EPISODES = 7
+
 ACT_WORDS = {
     "Prologue": 0, "One": 1, "Two": 2, "Three": 3, "Four": 4,
     "Five": 5, "Six": 6, "Seven": 7, "Eight": 8, "Nine": 9, "Ten": 10
@@ -76,9 +77,13 @@ def scrape_episode(url):
             number_text = "Prologue"
         else:
             word = label_elem.get_text(strip=True).replace("Act ", "").replace("Part ", "").strip()
-            act_number = ACT_WORDS.get(word, None)
-            if act_number is None:
-                continue
+            if word in ACT_WORDS:
+                act_number = ACT_WORDS[word]
+            else:
+                try:
+                    act_number = int(word)
+                except ValueError:
+                    continue
             number_text = f"Act {word}"
 
         act_summary_elem = act.select_one(".field-name-body .field-item")
