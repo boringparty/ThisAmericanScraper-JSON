@@ -18,6 +18,8 @@ ACT_WORDS = {
     "Five": 5, "Six": 6, "Seven": 7, "Eight": 8, "Nine": 9, "Ten": 10
 }
 
+OUTPUT_FILE = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data.json")
+
 def fetch_episode_page(url):
     try:
         r = requests.get(url, headers=HEADERS)
@@ -132,7 +134,7 @@ def main():
     scrape_mode = os.environ.get("SCRAPE_MODE", "latest").lower()
 
     try:
-        with open("tal_episodes.json", "r", encoding="utf-8") as f:
+        with open(OUTPUT_FILE, "r", encoding="utf-8") as f:
             episodes = json.load(f)
     except FileNotFoundError:
         episodes = []
@@ -162,7 +164,7 @@ def main():
     for ep in episodes:
         ep["published_dates"] = sorted(ep["published_dates"])
 
-    with open("tal_episodes.json", "w", encoding="utf-8") as f:
+    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         json.dump(episodes, f, ensure_ascii=False, indent=2)
 
 if __name__ == "__main__":
