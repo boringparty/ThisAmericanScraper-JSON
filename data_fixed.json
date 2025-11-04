@@ -1,5 +1,52 @@
 [
   {
+    "title": "Winners",
+    "number": "872",
+    "original_air_date": "Fri, 31 Oct 2025 00:00:00 +0000",
+    "episode_url": "https://www.thisamericanlife.org/872/winners",
+    "explicit": false,
+    "synopsis": "America loves winners—now more than ever. But how do you get to a win in 2025 America? We watch someone trying to score a win in a game whose rules are being made up as she plays.",
+    "download": "https://pfx.vpixl.com/6qj4J/dts.podtrac.com/redirect.mp3/chrt.fm/track/138C95/pdst.fm/e/prefix.up.audio/s/traffic.megaphone.fm/NPR6970061584.mp3",
+    "download_clean": null,
+    "image": {
+      "url": "https://www.thisamericanlife.org/sites/default/files/styles/landscape/public/episodes/images/tal-872-winnersistock577312380.jpg?itok=-2xKUTEj",
+      "credit": null
+    },
+    "acts": [
+      {
+        "number": 0,
+        "number_text": "Prologue",
+        "title": "Prologue",
+        "summary": "Ira talks to producer Diane Wu about an informal survey she’s done with the staff of This American Life about a phrase Ira says a lot that includes the word “winners.”",
+        "duration": 8,
+        "contributors": []
+      },
+      {
+        "number": 1,
+        "number_text": "Act One",
+        "title": "Act One: Winners Welcome",
+        "summary": "Two people see one of President Trump’s first executive orders and get excited, and then get to work.",
+        "duration": 30,
+        "contributors": [
+          "Chana Joffe-Walt",
+          "Nancy Updike"
+        ]
+      },
+      {
+        "number": 2,
+        "number_text": "Act Two",
+        "title": "Act Two: Winners Welcome, cont’d",
+        "summary": "We follow the progress of one woman as she builds up, from scratch, a whole movement based on one of Trump’s executive orders.",
+        "duration": 19,
+        "contributors": []
+      }
+    ],
+    "published_dates": [
+      "Fri, 31 Oct 2025 00:00:00 +0000",
+      "Sun, 02 Nov 2025 00:00:00 +0000"
+    ]
+  },
+  {
     "title": "The Thing About Things",
     "number": "871",
     "original_air_date": "Fri, 24 Oct 2025 00:00:00 +0000",
@@ -47,50 +94,6 @@
     "published_dates": [
       "Fri, 24 Oct 2025 00:00:00 +0000",
       "Sun, 26 Oct 2025 00:00:00 +0000"
-    ]
-  },
-  {
-    "title": "This Is the Case of Henry Dee",
-    "number": "844",
-    "original_air_date": "Fri, 18 Oct 2024 00:00:00 +0000",
-    "episode_url": "https://www.thisamericanlife.org/844/this-is-the-case-of-henry-dee",
-    "explicit": false,
-    "synopsis": "Thirteen parole board members decide whether or not one man should be released from prison.",
-    "download": "https://pfx.vpixl.com/6qj4J/dts.podtrac.com/redirect.mp3/chrt.fm/track/138C95/pdst.fm/e/prefix.up.audio/s/traffic.megaphone.fm/NPR6325401197.mp3",
-    "download_clean": null,
-    "image": {
-      "url": "https://www.thisamericanlife.org/sites/default/files/styles/large_portrait/public/episodes/images/tal-844-paroleshow-andreruddock.jpg?itok=ayq8mLfn",
-      "credit": null
-    },
-    "acts": [
-      {
-        "number": 0,
-        "number_text": "Prologue",
-        "title": "Prologue",
-        "summary": "Henry Dee has been locked up for most of his life, nearly 50 years. Now, he’s up for parole. Reporter Ben Austen tells the story.",
-        "duration": 19,
-        "contributors": []
-      },
-      {
-        "number": 1,
-        "number_text": "Act 1",
-        "title": "Act 1: Part 1",
-        "summary": "The parole board members puzzle through the pros and cons of releasing Henry Dee from prison and cast their votes.",
-        "duration": 26,
-        "contributors": []
-      },
-      {
-        "number": 2,
-        "number_text": "Act 2",
-        "title": "Act 2: Part 2",
-        "summary": "Reporter Ben Austen continues the story.",
-        "duration": 8,
-        "contributors": []
-      }
-    ],
-    "published_dates": [
-      "Fri, 18 Oct 2024 00:00:00 +0000",
-      "Sun, 19 Oct 2025 00:00:00 +0000"
     ]
   },
   {
@@ -187,53 +190,6 @@
     ],
     "published_dates": [
       "Fri, 03 Oct 2025 00:00:00 +0000"
-    ]
-  },
-  {
-    "title": "Winners",
-    "number": "872",
-    "original_air_date": "Fri, 31 Oct 2025 00:00:00 +0000",
-    "episode_url": "https://www.thisamericanlife.org/872/winners",
-    "explicit": false,
-    "synopsis": "America loves winners—now more than ever. But how do you get to a win in 2025 America? We watch someone trying to score a win in a game whose rules are being made up as she plays.",
-    "download": "https://pfx.vpixl.com/6qj4J/dts.podtrac.com/redirect.mp3/chrt.fm/track/138C95/pdst.fm/e/prefix.up.audio/s/traffic.megaphone.fm/NPR6970061584.mp3",
-    "download_clean": null,
-    "image": {
-      "url": "https://www.thisamericanlife.org/sites/default/files/styles/landscape/public/episodes/images/tal-872-winnersistock577312380.jpg?itok=-2xKUTEj",
-      "credit": null
-    },
-    "acts": [
-      {
-        "number": 0,
-        "number_text": "Prologue",
-        "title": "Prologue",
-        "summary": "Ira talks to producer Diane Wu about an informal survey she’s done with the staff of This American Life about a phrase Ira says a lot that includes the word “winners.”",
-        "duration": 8,
-        "contributors": []
-      },
-      {
-        "number": 1,
-        "number_text": "Act One",
-        "title": "Act One: Winners Welcome",
-        "summary": "Two people see one of President Trump’s first executive orders and get excited, and then get to work.",
-        "duration": 30,
-        "contributors": [
-          "Chana Joffe-Walt",
-          "Nancy Updike"
-        ]
-      },
-      {
-        "number": 2,
-        "number_text": "Act Two",
-        "title": "Act Two: Winners Welcome, cont’d",
-        "summary": "We follow the progress of one woman as she builds up, from scratch, a whole movement based on one of Trump’s executive orders.",
-        "duration": 19,
-        "contributors": []
-      }
-    ],
-    "published_dates": [
-      "Fri, 31 Oct 2025 00:00:00 +0000",
-      "Sun, 02 Nov 2025 00:00:00 +0000"
     ]
   },
   {
@@ -1600,6 +1556,50 @@
     ],
     "published_dates": [
       "Fri, 01 Nov 2024 00:00:00 +0000"
+    ]
+  },
+  {
+    "title": "This Is the Case of Henry Dee",
+    "number": "844",
+    "original_air_date": "Fri, 18 Oct 2024 00:00:00 +0000",
+    "episode_url": "https://www.thisamericanlife.org/844/this-is-the-case-of-henry-dee",
+    "explicit": false,
+    "synopsis": "Thirteen parole board members decide whether or not one man should be released from prison.",
+    "download": "https://pfx.vpixl.com/6qj4J/dts.podtrac.com/redirect.mp3/chrt.fm/track/138C95/pdst.fm/e/prefix.up.audio/s/traffic.megaphone.fm/NPR6325401197.mp3",
+    "download_clean": null,
+    "image": {
+      "url": "https://www.thisamericanlife.org/sites/default/files/styles/large_portrait/public/episodes/images/tal-844-paroleshow-andreruddock.jpg?itok=ayq8mLfn",
+      "credit": null
+    },
+    "acts": [
+      {
+        "number": 0,
+        "number_text": "Prologue",
+        "title": "Prologue",
+        "summary": "Henry Dee has been locked up for most of his life, nearly 50 years. Now, he’s up for parole. Reporter Ben Austen tells the story.",
+        "duration": 19,
+        "contributors": []
+      },
+      {
+        "number": 1,
+        "number_text": "Act 1",
+        "title": "Act 1: Part 1",
+        "summary": "The parole board members puzzle through the pros and cons of releasing Henry Dee from prison and cast their votes.",
+        "duration": 26,
+        "contributors": []
+      },
+      {
+        "number": 2,
+        "number_text": "Act 2",
+        "title": "Act 2: Part 2",
+        "summary": "Reporter Ben Austen continues the story.",
+        "duration": 8,
+        "contributors": []
+      }
+    ],
+    "published_dates": [
+      "Fri, 18 Oct 2024 00:00:00 +0000",
+      "Sun, 19 Oct 2025 00:00:00 +0000"
     ]
   },
   {
