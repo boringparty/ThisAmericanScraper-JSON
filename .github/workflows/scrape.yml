@@ -1,4 +1,4 @@
-name: TAL Scraper
+name: TAL Scraper + RSS
 
 permissions:
   contents: write
@@ -7,17 +7,21 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: 'Scrape mode'
+        description: 'Workflow mode'
         required: true
-        default: 7
+        default: all
         type: choice
         options:
-          - latest
           - all
-          - 7  # example number for testing
+          - scrape
+          - feed
+  schedule:
+    - cron: '1 1 * * 1'  # 5pm PST Sunday
+    - cron: '2 1 * * 1'  # 6pm PST Sunday
+    - cron: '3 1 * * 1'  # 7pm PST Sunday
 
 jobs:
-  scrape:
+  run_workflow:
     runs-on: ubuntu-latest
 
     steps:
@@ -34,15 +38,30 @@ jobs:
           pip install --upgrade pip
           pip install requests beautifulsoup4 lxml feedparser
 
-      - name: Run scraper
+      - name: Run Scraper
+        if: ${{ github.event.inputs.mode == 'all' || github.event.inputs.mode == 'scrape' }}
         env:
           SCRAPE_MODE: ${{ github.event.inputs.mode }}
         run: python script/scrape.py
 
-      - name: Commit & push
+      - name: Commit & push scraped data
+        if: ${{ github.event.inputs.mode == 'all' || github.event.inputs.mode == 'scrape' }}
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data.json
           git diff --quiet && git diff --staged --quiet || git commit -m "Update TAL episodes data"
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:main
+
+      - name: Generate RSS feed
+        if: ${{ github.event.inputs.mode == 'all' || github.event.inputs.mode == 'feed' }}
+        run: python script/generateFeed.py
+
+      - name: Commit & push RSS feed
+        if: ${{ github.event.inputs.mode == 'all' || github.event.inputs.mode == 'feed' }}
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add feed.xml
+          git diff --quiet && git diff --staged --quiet || git commit -m "Update TAL RSS feed"
           git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:main
