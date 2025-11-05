@@ -59,6 +59,7 @@ def main():
       <title>{ep["number"]}: {ep["title"]}{title_suffix}</title>
       <link>{ep["episode_url"]}</link>
       <guid>{guid}</guid>
+      <itunes:season>{orig_dt.year}</itunes:season>
       <itunes:episode>{ep["number"]}</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:explicit>{explicit_val}</itunes:explicit>
@@ -78,6 +79,7 @@ def main():
       <title>{ep["number"]}: {ep["title"]}{title_suffix} (Clean)</title>
       <link>{ep["episode_url"]}</link>
       <guid>{guid_clean}</guid>
+      <itunes:season>{orig_dt.year}</itunes:season>
       <itunes:episode>{ep["number"]}</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:explicit>clean</itunes:explicit>
