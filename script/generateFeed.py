@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 import json
 from datetime import datetime, timezone, timedelta
+from pathlib import Path
 
-INPUT_FILE = "data.json"
-OUTPUT_FILE = "feed.xml"
+INPUT_FILE = Path(__file__).parent.parent / "data.json"
+OUTPUT_FILE = Path(__file__).parent.parent / "feed.xml"
 
 def format_rfc822(dt: datetime):
     dt_utc = dt.astimezone(timezone.utc)
@@ -15,7 +16,6 @@ def format_duration(total_minutes: int):
 
 def build_description(ep):
     lines = [ep["episode_url"], "", ep["synopsis"].strip(), ""]
-
     for act in ep.get("acts", []):
         lines.append(act["number_text"] if act["number_text"] != "Prologue" else "Prologue")
         summary_line = act["summary"].strip()
@@ -25,35 +25,30 @@ def build_description(ep):
             summary_line += " by " + ", ".join(act["contributors"])
         lines.append(summary_line)
         lines.append("")  # newline between acts
-
     lines.append(f"Originally Aired: {datetime.strptime(ep['original_air_date'], '%a, %d %b %Y %H:%M:%S %z').strftime('%Y-%m-%d')}")
-    return "<![CDATA[" + "\n".join(lines) + "]]>"
+    return "\n".join(lines)
 
-def make_item(ep, clean=False):
-    total_minutes = sum((act.get("duration") or 0) for act in ep.get("acts", []))
-    padded_number = ep["number"].zfill(4)
+def make_item(ep, download_url, explicit_val):
     latest_pub_str = max(ep.get("published_dates", []),
                          key=lambda x: datetime.strptime(x, "%a, %d %b %Y %H:%M:%S %z"))
     latest_pub_dt = datetime.strptime(latest_pub_str, "%a, %d %b %Y %H:%M:%S %z")
     orig_dt = datetime.strptime(ep["original_air_date"], "%a, %d %b %Y %H:%M:%S %z")
-    is_repeat = latest_pub_dt.year != orig_dt.year
-    title_suffix = " - Repeat" if is_repeat else ""
-    explicit_val = "clean" if clean else ("yes" if not clean else "no")
-    guid = f"{padded_number}-{latest_pub_dt.strftime('%Y%m%d')}" + ("-C" if clean else "")
-    item_title = f"{ep['number']}: {ep['title']}{title_suffix}" + (" (Clean)" if clean else "")
-    download_url = ep["download_clean"] if clean else ep["download"]
 
+    total_minutes = sum((act.get("duration") or 0) for act in ep.get("acts", []))
+    padded_number = ep["number"].zfill(4)
+    guid_suffix = "-C" if explicit_val == "clean" else ""
+    guid = f"{padded_number}-{latest_pub_dt.strftime('%Y%m%d')}{guid_suffix}"
     description = build_description(ep)
 
     item = f"""    <item>
-      <title>{item_title}</title>
-      <link>{ep['episode_url']}</link>
+      <title>{ep["number"]}: {ep["title"]}</title>
+      <link>{ep["episode_url"]}</link>
       <guid>{guid}</guid>
       <itunes:season>{orig_dt.year}</itunes:season>
-      <itunes:episode>{ep['number']}</itunes:episode>
+      <itunes:episode>{ep["number"]}</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:explicit>{explicit_val}</itunes:explicit>
-      <description>{description}</description>
+      <description><![CDATA[{description}]]></description>
       <pubDate>{format_rfc822(latest_pub_dt)}</pubDate>
       <enclosure url="{download_url}" type="audio/mpeg"/>
       <itunes:duration>{format_duration(total_minutes)}</itunes:duration>"""
@@ -70,10 +65,15 @@ def main():
     for ep in episodes:
         if not ep.get("download"):
             continue
-        items.append(make_item(ep, clean=False))
-        if ep.get("download_clean"):
-            items.append(make_item(ep, clean=True))
+        # normal episode
+        explicit_val = "true" if ep.get("explicit") else "false"
+        items.append(make_item(ep, ep["download"], explicit_val))
 
+        # clean episode if exists
+        if ep.get("download_clean"):
+            items.append(make_item(ep, ep["download_clean"], "clean"))
+
+    # sort descending by pubDate
     items.sort(key=lambda x: datetime.strptime(
         x.split("<pubDate>")[1].split("</pubDate>")[0], "%a, %d %b %Y %H:%M:%S %z"), reverse=True)
 
