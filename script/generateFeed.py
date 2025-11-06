@@ -25,7 +25,8 @@ def build_description(ep):
         lines.append(summary_line)
         lines.append("")
     lines.append(f"Originally Aired: {datetime.strptime(ep['original_air_date'], '%a, %d %b %Y %H:%M:%S %z').strftime('%Y-%m-%d')}")
-    return "\n".join(lines)
+    full_desc = "\n".join(lines)
+    return f"<![CDATA[{full_desc}]]>"
 
 def build_item(ep, latest_pub_dt, clean=False):
     padded_number = ep["number"].zfill(4)
