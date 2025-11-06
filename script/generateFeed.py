@@ -15,8 +15,8 @@ def format_duration(total_minutes: int):
     return f"{hours:02}:{minutes:02}:00"
 
 def build_description(ep):
-    lines = [ep["synopsis"].strip(), ""]
-
+    lines = [ep["episode_url"], "", ep["synopsis"].strip(), ""]
+    
     for act in ep.get("acts", []):
         lines.append(act["number_text"] if act["number_text"] != "Prologue" else "Prologue")
         summary_line = act["summary"].strip()
@@ -26,9 +26,28 @@ def build_description(ep):
             summary_line += " by " + ", ".join(act["contributors"])
         lines.append(summary_line)
         lines.append("")  # extra newline between acts
-    
-    lines.append(f"Originally Aired: {datetime.strptime(ep['original_air_date'], '%a, %d %b %Y %H:%M:%S %z').strftime('%Y-%m-%d')}")
+
+    lines.append(
+        "Originally Aired: " +
+        datetime.strptime(ep["original_air_date"], "%a, %d %b %Y %H:%M:%S %z").strftime("%Y-%m-%d")
+    )
     return "\n".join(lines)
+
+# def build_description(ep):
+#     lines = [ep["synopsis"].strip(), ""]
+
+#     for act in ep.get("acts", []):
+#         lines.append(act["number_text"] if act["number_text"] != "Prologue" else "Prologue")
+#         summary_line = act["summary"].strip()
+#         if act.get("duration"):
+#             summary_line += f" ({act['duration']} minutes)"
+#         if act.get("contributors"):
+#             summary_line += " by " + ", ".join(act["contributors"])
+#         lines.append(summary_line)
+#         lines.append("")  # extra newline between acts
+    
+#     lines.append(f"Originally Aired: {datetime.strptime(ep['original_air_date'], '%a, %d %b %Y %H:%M:%S %z').strftime('%Y-%m-%d')}")
+#     return "\n".join(lines)
 
 def main():
     with open(INPUT_FILE, "r", encoding="utf-8") as f:
