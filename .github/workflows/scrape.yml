@@ -6,15 +6,17 @@ permissions:
 on:
   workflow_dispatch:
     inputs:
-      mode:
-        description: 'Workflow mode'
-        required: true
-        default: all
-        type: choice
-        options:
-          - all
-          - scrape
-          - feed
+        mode:
+          description: 'Workflow mode'
+          required: true
+          default: all
+          type: choice
+          options:
+            - all
+            - scrape
+            - generate feed
+            - generate markdown
+
   schedule:
     - cron: '1 1 * * 1'  # 5pm PST Sunday
     - cron: '2 1 * * 1'  # 6pm PST Sunday
@@ -65,3 +67,6 @@ jobs:
           git add feed.xml
           git diff --quiet && git diff --staged --quiet || git commit -m "Update TAL RSS feed"
           git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:main
+      - name: Generate markdown
+        if: ${{ github.event.inputs.mode == 'all' || github.event.inputs.mode == 'generate markdown' }}
+        run: python script/markdown.py
