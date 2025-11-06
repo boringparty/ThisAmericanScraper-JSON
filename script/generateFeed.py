@@ -27,7 +27,7 @@ def build_description(ep):
         lines.append(summary_line)
         lines.append("")  # extra newline between acts
     
-    lines.append(f"Originally Aired: {datetime.strptime(ep['original_air_date'], '%a, %d %b %Y %H:%M:%S %z').strftime('%Y-%m-%d')}")
+    lines.append(f"Link: {ep["episode_url"]}\nOriginally Aired: {datetime.strptime(ep['original_air_date'], '%a, %d %b %Y %H:%M:%S %z').strftime('%Y-%m-%d')}")
     return "\n".join(lines)
 
 def main():
