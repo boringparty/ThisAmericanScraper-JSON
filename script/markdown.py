@@ -1,13 +1,18 @@
 import json
 from datetime import datetime
+from pathlib import Path
 
-with open("/data.json") as f:
+repo_root = Path(__file__).parent.parent  # /script/ -> repo root
+data_file = repo_root / "data.json"
+md_file = repo_root / "episodes.md"
+
+with open(data_file) as f:
     episodes = json.load(f)
 
 # Sort ascending by original_air_date
 episodes.sort(key=lambda ep: datetime.strptime(ep["original_air_date"].split(" +")[0], "%a, %d %b %Y %H:%M:%S"))
 
-with open("/episodes.md", "w") as out:
+with open(md_file, "w") as out:
     out.write("Title|Release Date|Download|Clean|Segments|\n")
     out.write("---|:-:|:-:|:-:|-\n")
 
