@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 import json
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 
 INPUT_FILE = "data.json"
 OUTPUT_FILE = "feed.xml"
 
 def format_rfc822(dt: datetime):
+    # Ensure UTC
     dt_utc = dt.astimezone(timezone.utc)
     return dt_utc.strftime("%a, %d %b %Y %H:%M:%S %z")
 
@@ -14,7 +15,8 @@ def format_duration(total_minutes: int):
     return f"{hours:02}:{minutes:02}:00"
 
 def build_description(ep):
-    lines = [ep["episode_url"], "", ep["synopsis"].strip(), ""]
+    lines = [ep["synopsis"].strip(), ""]
+
     for act in ep.get("acts", []):
         lines.append(act["number_text"] if act["number_text"] != "Prologue" else "Prologue")
         summary_line = act["summary"].strip()
@@ -23,27 +25,38 @@ def build_description(ep):
         if act.get("contributors"):
             summary_line += " by " + ", ".join(act["contributors"])
         lines.append(summary_line)
-        lines.append("")
-    lines.append(f"Originally Aired: {datetime.strptime(ep['original_air_date'], '%a, %d %b %Y %H:%M:%S %z').strftime('%Y-%m-%d')}")
-    full_desc = "\n".join(lines)
-    full_desc = full_desc.replace("]]>", "]]]]><![CDATA[>")
-    return f"<![CDATA[{full_desc}]]>"
+        lines.append("")  # extra newline between acts
+    
+    lines.append(f"Link: {ep["episode_url"]}\nOriginally Aired: {datetime.strptime(ep['original_air_date'], '%a, %d %b %Y %H:%M:%S %z').strftime('%Y-%m-%d')}")
+    return "\n".join(lines)
 
+def main():
+    with open(INPUT_FILE, "r", encoding="utf-8") as f:
+        episodes = json.load(f)
 
-def build_item(ep, latest_pub_dt, clean=False):
-    padded_number = ep["number"].zfill(4)
-    orig_dt = datetime.strptime(ep["original_air_date"], "%a, %d %b %Y %H:%M:%S %z")
-    is_repeat = latest_pub_dt.year != orig_dt.year
-    title_suffix = " - Repeat" if is_repeat else ""
-    description = build_description(ep)
-    total_minutes = sum((act.get("duration") or 0) for act in ep.get("acts", []))
-    guid_suffix = "-C" if clean else ""
-    explicit_val = "clean" if clean else ("yes" if ep.get("download_clean") else "yes")
-    download_url = ep["download_clean"] if clean else ep["download"]
-    guid = f"{padded_number}-{latest_pub_dt.strftime('%Y%m%d')}{guid_suffix}"
+    items = []
+    for ep in episodes:
+        # skip if no download
+        if not ep.get("download"):
+            continue
 
-    item = f"""    <item>
-      <title>{ep["number"]}: {ep["title"]}{title_suffix}{' (Clean)' if clean else ''}</title>
+        # get latest published date
+        latest_pub_str = max(ep.get("published_dates", []),
+                             key=lambda x: datetime.strptime(x, "%a, %d %b %Y %H:%M:%S %z"))
+        latest_pub_dt = datetime.strptime(latest_pub_str, "%a, %d %b %Y %H:%M:%S %z")
+        orig_dt = datetime.strptime(ep["original_air_date"], "%a, %d %b %Y %H:%M:%S %z")
+
+        is_repeat = latest_pub_dt.year != orig_dt.year
+        title_suffix = " - Repeat" if is_repeat else ""
+        description = build_description(ep)
+        total_minutes = sum((act.get("duration") or 0) for act in ep.get("acts", []))
+        padded_number = ep["number"].zfill(4)
+
+        # Main episode
+        explicit_val = "yes" if ep.get("download_clean") else "clean"
+        guid = f"{padded_number}-{latest_pub_dt.strftime('%Y%m%d')}"
+        item = f"""    <item>
+      <title>{ep["number"]}: {ep["title"]}{title_suffix}</title>
       <link>{ep["episode_url"]}</link>
       <guid>{guid}</guid>
       <itunes:season>{orig_dt.year}</itunes:season>
@@ -52,31 +65,34 @@ def build_item(ep, latest_pub_dt, clean=False):
       <itunes:explicit>{explicit_val}</itunes:explicit>
       <description>{description}</description>
       <pubDate>{format_rfc822(latest_pub_dt)}</pubDate>
-      <enclosure url="{download_url}" type="audio/mpeg"/>
+      <enclosure url="{ep["download"]}" type="audio/mpeg"/>
       <itunes:duration>{format_duration(total_minutes)}</itunes:duration>"""
-    if ep.get("image") and ep["image"].get("url"):
-        item += f'\n      <itunes:image href="{ep["image"]["url"]}"/>'
-    item += "\n    </item>"
-    return item
+        if ep.get("image") and ep["image"].get("url"):
+            item += f'\n      <itunes:image href="{ep["image"]["url"]}"/>'
+        item += "\n    </item>"
+        items.append(item)
 
-def main():
-    with open(INPUT_FILE, "r", encoding="utf-8") as f:
-        episodes = json.load(f)
-
-    items = []
-    for ep in episodes:
-        if not ep.get("download"):
-            continue
-        latest_pub_str = max(ep.get("published_dates", []),
-                             key=lambda x: datetime.strptime(x, "%a, %d %b %Y %H:%M:%S %z"))
-        latest_pub_dt = datetime.strptime(latest_pub_str, "%a, %d %b %Y %H:%M:%S %z")
-        # Normal version
-        items.append(build_item(ep, latest_pub_dt, clean=False))
         # Clean version if exists
         if ep.get("download_clean"):
-            items.append(build_item(ep, latest_pub_dt, clean=True))
+            guid_clean = f"{padded_number}-{latest_pub_dt.strftime('%Y%m%d')}-C"
+            item_clean = f"""    <item>
+      <title>{ep["number"]}: {ep["title"]}{title_suffix} (Clean)</title>
+      <link>{ep["episode_url"]}</link>
+      <guid>{guid_clean}</guid>
+      <itunes:season>{orig_dt.year}</itunes:season>
+      <itunes:episode>{ep["number"]}</itunes:episode>
+      <itunes:episodeType>full</itunes:episodeType>
+      <itunes:explicit>clean</itunes:explicit>
+      <description>{description}</description>
+      <pubDate>{format_rfc822(latest_pub_dt)}</pubDate>
+      <enclosure url="{ep["download_clean"]}" type="audio/mpeg"/>
+      <itunes:duration>{format_duration(total_minutes)}</itunes:duration>"""
+            if ep.get("image") and ep["image"].get("url"):
+                item_clean += f'\n      <itunes:image href="{ep["image"]["url"]}"/>'
+            item_clean += "\n    </item>"
+            items.append(item_clean)
 
-    # Sort descending by pubDate
+    # Sort items descending by published date
     items.sort(key=lambda x: datetime.strptime(
         x.split("<pubDate>")[1].split("</pubDate>")[0], "%a, %d %b %Y %H:%M:%S %z"), reverse=True)
 
