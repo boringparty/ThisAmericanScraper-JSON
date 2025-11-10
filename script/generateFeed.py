@@ -30,7 +30,7 @@ def build_description(ep):
 def parse_any_date(s):
     """Return datetime at UTC midnight for multiple string formats."""
     dt = None
-    for fmt in ("%Y-%m-%d", "%a, %d %b %Y %H:%M:%S %z", "%B %d, %Y"):
+    for fmt in ("%Y-%m-%d", "%a, %d %b %Y %H:%M:%S %z", "%B %d, %Y", "%b %d, %Y"):
         try:
             dt = datetime.strptime(s, fmt)
             break
