@@ -46,7 +46,15 @@ def scrape_episode(url):
     number_elem = soup.select_one(".field-name-field-episode-number .field-item")
     number = number_elem.get_text(strip=True) if number_elem else ""
     original_air_elem = soup.select_one(".field-name-field-radio-air-date .date-display-single")
-    original_air_date = original_air_elem.get_text(strip=True) if original_air_elem else ""
+    original_air_date_raw = original_air_elem.get_text(strip=True) if original_air_elem else ""
+
+# parse and convert to RFC822
+try:
+    dt = parse_any_date_str(original_air_date_raw)
+    original_air_date = format_datetime(dt)  # 'Fri, 07 Nov 2025 00:00:00 +0000'
+
+except Exception:
+    original_air_date = original_air_date_raw  # fallback if parsing fails
     synopsis_elem = soup.select_one(".field-name-body .field-item")
     synopsis = synopsis_elem.get_text(strip=True) if synopsis_elem else ""
 
