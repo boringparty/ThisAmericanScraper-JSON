@@ -8,6 +8,7 @@ import re
 import time
 from datetime import datetime, timezone
 from dateutil import parser
+from email.utils import format_datetime
 
 HEADERS = {"User-Agent": "Mozilla/5.0"}
 OFFICIAL_RSS = "https://thisamericanlife.org/podcast/rss.xml"
@@ -45,16 +46,16 @@ def scrape_episode(url):
     title = soup.select_one("h1").get_text(strip=True) if soup.select_one("h1") else ""
     number_elem = soup.select_one(".field-name-field-episode-number .field-item")
     number = number_elem.get_text(strip=True) if number_elem else ""
+
+    # Parse original air date and format RFC822
     original_air_elem = soup.select_one(".field-name-field-radio-air-date .date-display-single")
     original_air_date_raw = original_air_elem.get_text(strip=True) if original_air_elem else ""
+    try:
+        dt = parse_any_date_str(original_air_date_raw)
+        original_air_date = format_datetime(dt)  # RFC822
+    except Exception:
+        original_air_date = original_air_date_raw  # fallback
 
-# parse and convert to RFC822
-try:
-    dt = parse_any_date_str(original_air_date_raw)
-    original_air_date = format_datetime(dt)  # 'Fri, 07 Nov 2025 00:00:00 +0000'
-
-except Exception:
-    original_air_date = original_air_date_raw  # fallback if parsing fails
     synopsis_elem = soup.select_one(".field-name-body .field-item")
     synopsis = synopsis_elem.get_text(strip=True) if synopsis_elem else ""
 
@@ -136,9 +137,9 @@ def update_published_dates(episodes):
             continue
         try:
             dt = parse_any_date_str(pub_date)
-        except ValueError:
+            pub_str = format_datetime(dt)  # RFC822
+        except Exception:
             continue
-        pub_str = dt.strftime("%a, %d %b %Y %H:%M:%S %z")  # store as RFC822
         existing = next((ep for ep in episodes if ep["episode_url"] == url), None)
         if existing and pub_str not in existing["published_dates"]:
             existing["published_dates"].append(pub_str)
