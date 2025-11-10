@@ -130,7 +130,7 @@ def update_published_dates(episodes):
             dt = parse_any_date_str(pub_date)
         except ValueError:
             continue
-        pub_str = dt.strftime("%Y-%m-%d")  # store as ISO
+        pub_str = dt.strftime("%a, %d %b %Y %H:%M:%S %z")  # store as RFC822
         existing = next((ep for ep in episodes if ep["episode_url"] == url), None)
         if existing and pub_str not in existing["published_dates"]:
             existing["published_dates"].append(pub_str)
