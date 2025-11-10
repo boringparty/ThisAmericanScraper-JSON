@@ -7,7 +7,7 @@ OUTPUT_FILE = "feed.xml"
 
 def format_rfc822(dt: datetime):
     dt_utc = dt.astimezone(timezone.utc)
-    return dt_utc.strftime("%a, %d %b %Y %H:%M:%S %z")
+    return dt_utc.strftime("%B %d, %Y")
 
 def format_duration(total_minutes: int):
     hours, minutes = divmod(total_minutes, 60)
