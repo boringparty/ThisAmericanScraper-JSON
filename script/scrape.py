@@ -32,19 +32,6 @@ def parse_any_date_str(s: str):
             continue
     raise ValueError(f"Unknown date format: {s}")
 
-# in main(), replace:
-ep["published_dates"] = sorted(
-    ep["published_dates"],
-    key=lambda x: datetime.strptime(x, "%a, %d %b %Y %H:%M:%S %z")
-)
-
-# with:
-ep["published_dates"] = sorted(
-    ep["published_dates"],
-    key=lambda x: parse_any_date_str(x)
-)
-
-
 def fetch_episode_page(url):
     try:
         r = requests.get(url, headers=HEADERS)
@@ -138,10 +125,10 @@ def update_published_dates(episodes):
         if not pub_date:
             continue
         try:
-            dt = parse_any_date(pub_date)
+            dt = parse_any_date_str(pub_date)
         except ValueError:
             continue
-        pub_str = dt.strftime("%a, %d %b %Y %H:%M:%S %z")
+        pub_str = dt.strftime("%Y-%m-%d")
         existing = next((ep for ep in episodes if ep["episode_url"] == url), None)
         if existing and pub_str not in existing["published_dates"]:
             existing["published_dates"].append(pub_str)
@@ -174,8 +161,9 @@ def main():
                 episodes.append(ep_data)
 
     update_published_dates(episodes)
+
     for ep in episodes:
-        ep["published_dates"] = sorted(ep["published_dates"], key=lambda x: datetime.strptime(x, "%a, %d %b %Y %H:%M:%S %z"))
+        ep["published_dates"] = sorted(ep["published_dates"], key=parse_any_date_str)
 
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         json.dump(episodes, f, ensure_ascii=False, indent=2)
