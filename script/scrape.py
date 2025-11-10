@@ -7,8 +7,6 @@ import json
 import re
 import time
 from datetime import datetime
-from email.utils import parsedate_to_datetime
-from urllib.parse import urlparse
 
 HEADERS = {"User-Agent": "Mozilla/5.0"}
 BACKFILL_RSS = "https://awk.space/tal.xml"
@@ -22,10 +20,6 @@ ACT_WORDS = {
 }
 
 OUTPUT_FILE = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data.json")
-
-def normalize_url(url):
-    parsed = urlparse(url)
-    return f"{parsed.scheme}://{parsed.netloc}{parsed.path.rstrip('/')}"
 
 def fetch_episode_page(url):
     try:
@@ -57,7 +51,6 @@ def scrape_episode(url):
     download_elem = soup.select_one("li.download a")
     download = download_elem["href"] if download_elem else None
     if not download:
-        print(f"No download link found for {url}")
         return None
 
     clean_elem = soup.select_one(".field-name-field-notes a[href*='/clean/']")
@@ -132,21 +125,13 @@ def scrape_episode(url):
 def update_published_dates(episodes):
     feed = feedparser.parse(OFFICIAL_RSS)
     for item in feed.entries:
-        url = normalize_url(item.link)
+        url = item.link
         pub_date = item.get("published") or item.get("pubDate")
         if not pub_date:
             continue
-        try:
-            date_obj = parsedate_to_datetime(pub_date)
-        except Exception:
-            try:
-                date_obj = datetime.strptime(pub_date, "%Y-%m-%d")
-            except Exception:
-                continue
-
+        date_obj = datetime.strptime(pub_date[:25], "%a, %d %b %Y %H:%M:%S")
         pub_str = date_obj.strftime("%Y-%m-%d")
-
-        existing = next((ep for ep in episodes if normalize_url(ep["episode_url"]) == url), None)
+        existing = next((ep for ep in episodes if ep["episode_url"] == url), None)
         if existing and pub_str not in existing["published_dates"]:
             existing["published_dates"].append(pub_str)
 
@@ -173,17 +158,11 @@ def main():
             entries_to_scrape = feed.entries[:DEFAULT_NUM_EPISODES]
 
     for entry in entries_to_scrape:
-        url = normalize_url(entry.link)
-        if any(normalize_url(ep["episode_url"]) == url for ep in episodes):
-            print(f"Episode already exists: {url}")
-            continue
-
-        ep_data = scrape_episode(url)
-        if ep_data:
-            episodes.append(ep_data)
-            print(f"Added episode: {ep_data['number']} - {ep_data['title']}")
-        else:
-            print(f"Failed to scrape episode: {url}")
+        url = entry.link
+        if not any(ep["episode_url"] == url for ep in episodes):
+            ep_data = scrape_episode(url)
+            if ep_data:
+                episodes.append(ep_data)
 
     update_published_dates(episodes)
 
