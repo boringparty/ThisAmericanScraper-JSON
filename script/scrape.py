@@ -143,20 +143,21 @@ def main():
             episodes = json.load(f)
     except FileNotFoundError:
         episodes = []
-
-    feed = feedparser.parse(BACKFILL_RSS)
-
+    
     if scrape_mode == "all":
+        feed = feedparser.parse(OFFICIAL_RSS)
         entries_to_scrape = feed.entries
-    elif scrape_mode == "latest":
-        entries_to_scrape = feed.entries[:DEFAULT_NUM_EPISODES]
     else:
-        try:
-            n = int(scrape_mode)
-            entries_to_scrape = feed.entries[:n]
-        except ValueError:
+        feed = feedparser.parse(BACKFILL_RSS)
+        if scrape_mode == "latest":
             entries_to_scrape = feed.entries[:DEFAULT_NUM_EPISODES]
-
+        else:
+            try:
+                n = int(scrape_mode)
+                entries_to_scrape = feed.entries[:n]
+            except ValueError:
+                entries_to_scrape = feed.entries[:DEFAULT_NUM_EPISODES]
+        
     for entry in entries_to_scrape:
         url = entry.link
         if not any(ep["episode_url"] == url for ep in episodes):
