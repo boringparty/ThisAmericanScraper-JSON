@@ -24,8 +24,17 @@ def build_description(ep):
             summary_line += " by " + ", ".join(act["contributors"])
         lines.append(summary_line)
         lines.append("")
-    lines.append(f"Originally Aired: {datetime.strptime(ep['original_air_date'], '%a, %d %b %Y %H:%M:%S %z').strftime('%Y-%m-%d')}")
+    lines.append(f"Originally Aired: {parse_any_date(ep['original_air_date']).strftime('%Y-%m-%d')}")
     return "\n".join(lines)
+
+def parse_any_date(s):
+    """Parse a date string in either YYYY-MM-DD or RFC 822 format."""
+    for fmt in ("%Y-%m-%d", "%a, %d %b %Y %H:%M:%S %z"):
+        try:
+            return datetime.strptime(s, fmt)
+        except ValueError:
+            continue
+    raise ValueError(f"Unknown date format: {s}")
 
 def main():
     with open(INPUT_FILE, "r", encoding="utf-8") as f:
@@ -35,11 +44,11 @@ def main():
     for ep in episodes:
         if not ep.get("download"):
             continue
-        
-        latest_pub_str = max(ep.get("published_dates", []),
-                     key=lambda x: datetime.strptime(x, "%Y-%m-%d"))
-        latest_pub_dt = datetime.strptime(latest_pub_str, "%Y-%m-%d")
-        orig_dt = datetime.strptime(ep["original_air_date"], "%Y-%m-%d")
+
+        # Use parse_any_date to handle mixed formats
+        latest_pub_str = max(ep.get("published_dates", []), key=parse_any_date)
+        latest_pub_dt = parse_any_date(latest_pub_str)
+        orig_dt = parse_any_date(ep["original_air_date"])
 
         is_repeat = latest_pub_dt.year != orig_dt.year
         title_suffix = " - Repeat" if is_repeat else ""
@@ -48,7 +57,6 @@ def main():
         total_minutes = sum((act.get("duration") or 0) for act in ep.get("acts", []))
         padded_number = ep["number"].zfill(4)
 
-        # Determine explicit tag
         explicit_val = "true" if ep.get("explicit") else "false"
 
         # Normal episode
@@ -90,8 +98,9 @@ def main():
             item_clean += "\n    </item>"
             items.append(item_clean)
 
-    items.sort(key=lambda x: datetime.strptime(
-        x.split("<pubDate>")[1].split("</pubDate>")[0], "%a, %d %b %Y %H:%M:%S %z"), reverse=True)
+    items.sort(key=lambda x: parse_any_date(
+        x.split("<pubDate>")[1].split("</pubDate>")[0]
+    ), reverse=True)
 
     rss_header = """<?xml version="1.0" ?>
 <rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" version="2.0">
