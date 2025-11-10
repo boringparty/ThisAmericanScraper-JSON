@@ -52200,5 +52200,75 @@
     "published_dates": [
       "August 22, 2008"
     ]
+  },
+  {
+    "title": "Got You Pegged",
+    "number": "873",
+    "original_air_date": "November 7, 2025",
+    "episode_url": "https://www.thisamericanlife.org/873/got-you-pegged",
+    "explicit": false,
+    "synopsis": "Shalom Auslander goes on vacation with his family, suspects the beloved, chatty old man in the room next door is an imposter, and sets out to prove it. This and other stories about the pitfalls of making snap judgments about others.",
+    "download": "https://pfx.vpixl.com/6qj4J/dts.podtrac.com/redirect.mp3/chrt.fm/track/138C95/pdst.fm/e/prefix.up.audio/s/traffic.megaphone.fm/NPR6792693909.mp3",
+    "download_clean": null,
+    "image": {
+      "url": "https://www.thisamericanlife.org/sites/default/files/styles/landscape/public/episodes/images/362.jpg?itok=sJIDirf7",
+      "credit": "Betsssssy"
+    },
+    "acts": [
+      {
+        "number": 0,
+        "number_text": "Prologue",
+        "title": "Prologue",
+        "summary": "Amy Roberts thought it was obvious that she was an adult, not a kid, and she assumed the friendly man working at the children's museum knew it too. Unfortunately, the man had Amy pegged all wrong. And by the time she figured it out, it was too late for either of them to save face. Host Ira Glass talks to Amy about the embarrassing ordeal that taught her never to assume she knows what someone else is thinking.",
+        "duration": 8,
+        "contributors": [
+          "Ira Glass"
+        ]
+      },
+      {
+        "number": 1,
+        "number_text": "Act One",
+        "title": "Act One: The Fat Blue Line",
+        "summary": "While riding in a patrol car to research a novel, crime writer Richard Price witnessed a misunderstanding that, for many people, is pretty much accepted as an upsetting fact of life. Richard Price told this story, which he describes as a tale taken from real life and dramatized, onstage at The Moth in New York.",
+        "duration": 12,
+        "contributors": [
+          "Richard Price"
+        ]
+      },
+      {
+        "number": 2,
+        "number_text": "Act Two",
+        "title": "Act Two: Yes, No or Baby",
+        "summary": "There are situations where making judgments about people based on limited information is not only accepted but required. One of those situations is open adoption, where birth mothers actually choose the adoptive parents for their child. Producer Nancy Updike talks to a pregnant woman named Kim, going through the first stage of open adoption: reading dozens of letters from prospective parents, all of whom seem utterly capable and appealing.",
+        "duration": 6,
+        "contributors": [
+          "Nancy Updike"
+        ]
+      },
+      {
+        "number": 3,
+        "number_text": "Act Three",
+        "title": "Act Three: Isn’t It Romantic?",
+        "summary": "David Rakoff picks a fight with a hit Broadway show.",
+        "duration": 6,
+        "contributors": [
+          "David Rakoff"
+        ]
+      },
+      {
+        "number": 4,
+        "number_text": "Act Four",
+        "title": "Act Four: Paradise Lost",
+        "summary": "Shalom Auslander tells the story of the time he went on vacation, pegged the guest in the room next door as an imposter, and devoted his holiday to trying to prove it. Shalom is the author of Feh: a Memoir .",
+        "duration": 22,
+        "contributors": [
+          "Shalom Auslander"
+        ]
+      }
+    ],
+    "published_dates": [
+      "2025-11-09",
+      "November 7, 2025"
+    ]
   }
 ]
