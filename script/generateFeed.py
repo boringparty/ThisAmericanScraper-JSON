@@ -48,7 +48,7 @@ def build_description(ep):
         lines.append("")
     orig_dt = parse_any_date(ep["original_air_date"])
     lines.append(f"Originally Aired: {orig_dt.strftime('%Y-%m-%d')}")
-    return "\n".join(lines)
+    return "<br>\n".join(lines)
 
 def main():
     with open(INPUT_FILE, "r", encoding="utf-8") as f:
