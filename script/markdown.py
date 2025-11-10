@@ -18,7 +18,7 @@ with open(data_file, encoding="utf-8") as f:
 # Sort ascending by original_air_date
 episodes.sort(
     key=lambda ep: datetime.strptime(
-        ep["original_air_date"].split(" +")[0], "%a, %d %b %Y %H:%M:%S"
+        ep["original_air_date"].split(" +")[0], "%B %d, %Y"
     )
 )
 
