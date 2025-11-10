@@ -28,13 +28,26 @@ def build_description(ep):
     return "\n".join(lines)
 
 def parse_any_date(s):
-    """Parse a date string in either YYYY-MM-DD or RFC 822 format."""
+    """Return datetime at UTC midnight for YYYY-MM-DD or RFC 822 strings."""
+    dt = None
     for fmt in ("%Y-%m-%d", "%a, %d %b %Y %H:%M:%S %z"):
         try:
-            return datetime.strptime(s, fmt)
+            dt = datetime.strptime(s, fmt)
+            break
         except ValueError:
             continue
-    raise ValueError(f"Unknown date format: {s}")
+    if dt is None:
+        raise ValueError(f"Unknown date format: {s}")
+
+    # Convert naive dates to UTC midnight
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+    else:
+        dt = dt.astimezone(timezone.utc)
+
+    # Standardize to midnight
+    dt = dt.replace(hour=0, minute=0, second=0, microsecond=0)
+    return dt
 
 def main():
     with open(INPUT_FILE, "r", encoding="utf-8") as f:
