@@ -6,7 +6,7 @@ import feedparser
 import json
 import re
 import time
-from datetime import timezone
+from datetime import timezone, timedelta
 from email.utils import format_datetime, parsedate_to_datetime
 from dateutil import parser
 
@@ -25,7 +25,6 @@ ACT_WORDS = {
 def parse_any_date_str(s: str):
     """Parse a date string and return a datetime in UTC."""
     try:
-        # try RSS-style date first
         dt = parsedate_to_datetime(s)
     except Exception:
         dt = parser.parse(s)
@@ -34,6 +33,13 @@ def parse_any_date_str(s: str):
     else:
         dt = dt.astimezone(timezone.utc)
     return dt
+
+
+def to_week_sunday(dt):
+    """Return a datetime rounded forward to the Sunday of the same week at 00:00:00 UTC."""
+    days_ahead = 6 - dt.weekday()
+    sunday = dt + timedelta(days=days_ahead)
+    return sunday.replace(hour=0, minute=0, second=0, microsecond=0, tzinfo=timezone.utc)
 
 
 def fetch_episode_page(url):
@@ -57,18 +63,11 @@ def scrape_episode(url):
     original_air_elem = soup.select_one(".field-name-field-radio-air-date .date-display-single")
     original_air_date_raw = original_air_elem.get_text(strip=True) if original_air_elem else ""
     
-    # parse and convert to RFC822
     try:
         dt = parse_any_date_str(original_air_date_raw)
-        original_air_date = format_datetime(dt)  # 'Fri, 07 Nov 2025 00:00:00 +0000'
+        original_air_date = format_datetime(dt)
     except Exception:
-        original_air_date = original_air_date_raw  # fallback if parsing fails
-        # convert to RFC822
-        try:
-            dt = parse_any_date_str(original_air_date_raw)
-            original_air_date = format_datetime(dt)
-        except Exception:
-            original_air_date = original_air_date_raw  # fallback
+        original_air_date = original_air_date_raw
 
     synopsis_elem = soup.select_one(".field-name-body .field-item")
     synopsis = synopsis_elem.get_text(strip=True) if synopsis_elem else ""
@@ -154,10 +153,14 @@ def update_published_dates(episodes):
             dt = parse_any_date_str(pub_date)
         except ValueError:
             continue
-        pub_str = format_datetime(dt)  # RFC822
+
+        dt_sunday = to_week_sunday(dt)
+        pub_str = format_datetime(dt_sunday)  # RFC822, Sunday 00:00:00 UTC
+
         existing = next((ep for ep in episodes if ep["episode_url"] == url), None)
-        if existing and pub_str not in existing["published_dates"]:
-            existing["published_dates"].append(pub_str)
+        if existing:
+            if pub_str not in existing["published_dates"]:
+                existing["published_dates"].append(pub_str)
 
 
 def main():
@@ -192,9 +195,9 @@ def main():
     # sort episodes by original_air_date (RFC822)
     episodes.sort(key=lambda ep: parse_any_date_str(ep["original_air_date"]))
 
-    # also sort published_dates for each episode
+    # sort and deduplicate published_dates
     for ep in episodes:
-        ep["published_dates"] = sorted(ep["published_dates"], key=parse_any_date_str)
+        ep["published_dates"] = sorted(list({d for d in ep["published_dates"]}), key=parse_any_date_str)
 
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         json.dump(episodes, f, ensure_ascii=False, indent=2)
