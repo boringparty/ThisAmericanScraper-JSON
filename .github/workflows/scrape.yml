@@ -68,17 +68,17 @@ jobs:
           git diff --quiet && git diff --staged --quiet || git commit -m "Update TAL RSS feed"
           git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:main
 
-      # - name: Generate Markdown
-      #   if: ${{ github.event.inputs.mode == 'all' || github.event.inputs.mode == 'generate markdown' }}
-      #   run: python script/markdown.py
+      - name: Generate Markdown
+        if: ${{ github.event.inputs.mode == 'all' || github.event.inputs.mode == 'generate markdown' }}
+        run: python script/markdown.py
 
-      # - name: Commit & push markdown table
-      #   if: ${{ github.event.inputs.mode == 'all' || github.event.inputs.mode == 'generate markdown' }}
-      #   run: |
-      #     git config --global user.name "github-actions[bot]"
-      #     git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-      #     git add episodes.md
-      #     git diff --quiet && git diff --staged --quiet || git commit -m "Update TAL markdown table"
-      #     git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:main
+      - name: Commit & push markdown table
+        if: ${{ github.event.inputs.mode == 'all' || github.event.inputs.mode == 'generate markdown' }}
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add episodes.md
+          git diff --quiet && git diff --staged --quiet || git commit -m "Update TAL markdown table"
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:main
 
 
