@@ -18,7 +18,7 @@ with open(data_file, encoding="utf-8") as f:
 # Sort ascending by original_air_date
 episodes.sort(
     key=lambda ep: datetime.strptime(
-        ep["original_air_date"].split(" +")[0], "%B %d, %Y"
+        ep["original_air_date"].split(" +")[0], "%a, %d %b %Y %H:%M:%S"
     )
 )
 
@@ -33,7 +33,7 @@ with open(md_file, "w", encoding="utf-8") as out:
         download = ep.get("download")
         download_clean = ep.get("download_clean")
         air_date = datetime.strptime(
-            ep["original_air_date"].split(" +")[0], "%B %d, %Y"
+            ep["original_air_date"].split(" +")[0], "%a, %d %b %Y %H:%M:%S"
         ).strftime("%Y-%m-%d")  # yyyy-mm-dd
         acts = ep.get("acts", [])
         act_titles = "; ".join(act.get("title") for act in acts)
