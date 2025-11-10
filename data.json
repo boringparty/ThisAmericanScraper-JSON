@@ -42,6 +42,7 @@
       }
     ],
     "published_dates": [
+      "2025-11-02",
       "Fri, 31 Oct 2025 00:00:00 +0000",
       "Sun, 02 Nov 2025 00:00:00 +0000"
     ]
@@ -92,6 +93,7 @@
       }
     ],
     "published_dates": [
+      "2025-10-26",
       "Fri, 24 Oct 2025 00:00:00 +0000",
       "Sun, 26 Oct 2025 00:00:00 +0000"
     ]
@@ -239,6 +241,7 @@
       }
     ],
     "published_dates": [
+      "2025-09-21",
       "Fri, 19 Sep 2025 00:00:00 +0000",
       "Sun, 21 Sep 2025 00:00:00 +0000"
     ]
@@ -293,6 +296,7 @@
       }
     ],
     "published_dates": [
+      "2025-09-14",
       "Fri, 12 Sep 2025 00:00:00 +0000",
       "Sun, 14 Sep 2025 00:00:00 +0000"
     ]
@@ -344,6 +348,7 @@
       }
     ],
     "published_dates": [
+      "2025-09-07",
       "Fri, 05 Sep 2025 00:00:00 +0000",
       "Sun, 07 Sep 2025 00:00:00 +0000"
     ]
@@ -396,6 +401,7 @@
       }
     ],
     "published_dates": [
+      "2025-08-24",
       "Fri, 22 Aug 2025 00:00:00 +0000",
       "Sun, 24 Aug 2025 00:00:00 +0000"
     ]
@@ -458,6 +464,7 @@
       }
     ],
     "published_dates": [
+      "2025-07-20",
       "Fri, 18 Jul 2025 00:00:00 +0000",
       "Sun, 20 Jul 2025 00:00:00 +0000"
     ]
@@ -519,6 +526,7 @@
       }
     ],
     "published_dates": [
+      "2025-06-29",
       "Fri, 27 Jun 2025 00:00:00 +0000",
       "Sun, 29 Jun 2025 00:00:00 +0000"
     ]
@@ -1598,6 +1606,7 @@
       }
     ],
     "published_dates": [
+      "2025-10-19",
       "Fri, 18 Oct 2024 00:00:00 +0000",
       "Sun, 19 Oct 2025 00:00:00 +0000"
     ]
@@ -52120,6 +52129,76 @@
     ],
     "published_dates": [
       "Fri, 17 Nov 1995 00:00:00 +0000"
+    ]
+  },
+  {
+    "title": "Got You Pegged (2008)",
+    "number": "362",
+    "original_air_date": "August 22, 2008",
+    "episode_url": "https://www.thisamericanlife.org/362/got-you-pegged",
+    "explicit": false,
+    "synopsis": "Shalom Auslander goes on vacation with his family, and suspects the beloved, chatty old man in the room next door is an imposter—and sets out to prove it. This and other stories about the pitfalls of making snap judgments about others.",
+    "download": "https://www.thisamericanlife.org/sites/default/files/audio/362/TQAsU2mT5NUOBEw3uvYitepZJ54vnh0-5N0BSVLvHP8/362.mp3",
+    "download_clean": null,
+    "image": {
+      "url": "https://www.thisamericanlife.org/sites/default/files/styles/landscape/public/episodes/images/362.jpg?itok=sJIDirf7",
+      "credit": "Betsssssy"
+    },
+    "acts": [
+      {
+        "number": 0,
+        "number_text": "Prologue",
+        "title": "Prologue",
+        "summary": "Amy Roberts thought it was obvious that she was an adult, not a kid, and she assumed the friendly man working at the children's museum knew it too. Unfortunately, the man had Amy pegged all wrong. And by the time she figured it out, it was too late for either of them to save face. Host Ira Glass talks to Amy about the embarrassing ordeal that taught her never to assume she knows what someone else is thinking.",
+        "duration": 8,
+        "contributors": [
+          "Ira Glass"
+        ]
+      },
+      {
+        "number": 1,
+        "number_text": "Act One",
+        "title": "Act One: The Fat Blue Line",
+        "summary": "While riding in a patrol car to research a novel, crime writer Richard Price witnessed a misunderstanding that for many people is pretty much accepted as an upsetting fact of life. Richard Price told this story—which he describes as a tale taken from real life and dramatized—onstage at the Moth in New York. Price's most recent novel is The Whites .",
+        "duration": 13,
+        "contributors": [
+          "The Moth",
+          "Richard Price"
+        ]
+      },
+      {
+        "number": 2,
+        "number_text": "Act Two",
+        "title": "Act Two: Stereotypes Uber Alles",
+        "summary": "When writer Chuck Klosterman got back from a trip to Germany, friends asked him what Germans were like. Did nine days as an American tourist make him qualified to answer? In this excerpt of an essay he wrote for Esquire magazine, Chuck explains why not. Chuck's newest book is What If We're Wrong?",
+        "duration": 7,
+        "contributors": [
+          "Chuck Klosterman"
+        ]
+      },
+      {
+        "number": 3,
+        "number_text": "Act Three",
+        "title": "Act Three: Yes, No or Baby",
+        "summary": "There are some situations where making judgments about people based on limited amounts of information is not only accepted, but required. One of those situations is open adoption, where birth mothers actually choose the adoptive parents for their child. TAL producer Nancy Updike talks to a pregnant woman named Kim going through the first stage of open adoption : Reading dozens of letters from prospect parents, all of whom seem utterly capable and appealing. With so many likable candidates to choose from, Kim ends up focusing on tiny details of people's lives.",
+        "duration": 6,
+        "contributors": [
+          "Nancy Updike"
+        ]
+      },
+      {
+        "number": 4,
+        "number_text": "Act Four",
+        "title": "Act Four: Paradise Lost",
+        "summary": "Shalom Auslander tells the story of the time he went on vacation, pegged the guest in the room next door as an impostor and devoted his holiday to trying to prove it. Shalom Auslander is the author, most recently, of the novel Hope: A Tragedy . He also created the television series Happyish .",
+        "duration": 22,
+        "contributors": [
+          "Shalom Auslander"
+        ]
+      }
+    ],
+    "published_dates": [
+      "August 22, 2008"
     ]
   }
 ]
