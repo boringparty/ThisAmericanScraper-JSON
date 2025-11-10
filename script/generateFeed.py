@@ -84,7 +84,7 @@ def main():
       <itunes:episode>{ep["number"]}</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:explicit>{explicit_val}</itunes:explicit>
-      <description>{description}]]></description>
+      <description>{description}></description>
       <pubDate>{format_rfc822(latest_pub_dt)}</pubDate>
       <enclosure url="{ep["download"]}" type="audio/mpeg"/>
       <itunes:duration>{format_duration(total_minutes)}</itunes:duration>"""
@@ -104,7 +104,7 @@ def main():
       <itunes:episode>{ep["number"]}</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:explicit>clean</itunes:explicit>
-      <description>{description}]]></description>
+      <description>{description}></description>
       <pubDate>{format_rfc822(latest_pub_dt)}</pubDate>
       <enclosure url="{ep["download_clean"]}" type="audio/mpeg"/>
       <itunes:duration>{format_duration(total_minutes)}</itunes:duration>"""
